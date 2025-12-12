@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import type { NextRequest } from "next/server";
 
 import accounts from "./accounts";
 import categories from "./categories";
@@ -15,12 +16,12 @@ const routes = app
   .route("/summary", summary)
   .route("/transactions", transactions);
 
-// Use the Hono app's fetch handler directly to avoid importing a non-existent adapter module
-const handler = (request: Request) => app.fetch(request);
+export function GET(request: NextRequest) {
+  return app.fetch(request);
+}
 
-export const GET = handler;
-export const POST = handler;
-export const PATCH = handler;
-export const DELETE = handler;
+export const POST = GET;
+export const PATCH = GET;
+export const DELETE = GET;
 
 export type AppType = typeof routes;
