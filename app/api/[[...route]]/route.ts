@@ -1,5 +1,4 @@
 import { Hono } from "hono";
-import { handle } from "hono/vercel";
 
 import accounts from "./accounts";
 import categories from "./categories";
@@ -16,9 +15,12 @@ const routes = app
   .route("/summary", summary)
   .route("/transactions", transactions);
 
-export const GET = handle(app);
-export const POST = handle(app);
-export const PATCH = handle(app);
-export const DELETE = handle(app);
+// Use the Hono app's fetch handler directly to avoid importing a non-existent adapter module
+const handler = (request: Request) => app.fetch(request);
+
+export const GET = handler;
+export const POST = handler;
+export const PATCH = handler;
+export const DELETE = handler;
 
 export type AppType = typeof routes;
